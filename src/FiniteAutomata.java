@@ -1,6 +1,5 @@
 import javafx.util.Pair;
 
-import java.awt.image.AreaAveragingScaleFilter;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.*;
@@ -23,6 +22,9 @@ public class FiniteAutomata {
         this.S = new HashMap<>();
     }
 
+    /**
+     * It reads the FA
+     * */
     public void read(String inputFile) {
         File file = new File(inputFile);
         Scanner scanner = null;
@@ -45,7 +47,8 @@ public class FiniteAutomata {
                 S.put(key, value);
             }
             else{ // if the key already exists we just ad the element to the existing element
-                S.get(key).add(line.get(2));
+                if(!S.get(key).contains(line.get(2)))
+                    S.get(key).add(line.get(2));
             }
 
         }
@@ -53,6 +56,12 @@ public class FiniteAutomata {
         scanner.close();
     }
 
+    /**
+     * In order to check that a FA is valid we check if the initial state is among the set
+     * of states and if all the final states are among the set of states. Also, we do the
+     * same for the states in transitions and for the symbols in transitions we check if
+     * all of them are in the set of input symbols.
+     * */
     public boolean isValid() {
         if(!Q.contains(q0))
             return false;
